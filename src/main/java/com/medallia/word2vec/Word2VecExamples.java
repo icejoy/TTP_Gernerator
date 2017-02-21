@@ -28,110 +28,121 @@ import java.util.Arrays;
 import java.util.List;
 
 /** Example usages of {@link Word2VecModel} */
-public class Word2VecExamples {
+public class Word2VecExamples
+{
 	private static final Log LOG = AutoLog.getLog();
-	
+
 	/** Runs the example */
-	public static void main(String[] args) throws IOException, TException, UnknownWordException, InterruptedException {
+	public static void main(String[] args) throws IOException, TException, UnknownWordException, InterruptedException
+	{
 		demoWord();
 	}
-	
-	/** 
-	 * Trains a model and allows user to find similar words
-	 * demo-word.sh example from the open source C implementation
+
+	/**
+	 * Trains a model and allows user to find similar words demo-word.sh example
+	 * from the open source C implementation
 	 */
-	public static void demoWord() throws IOException, TException, InterruptedException, UnknownWordException {
-		File f = new File("text8");
+	public static void demoWord() throws IOException, TException, InterruptedException, UnknownWordException
+	{
+		File f = new File("src/main/java/Data_Clear/test.txt");
 		if (!f.exists())
-	       	       throw new IllegalStateException("Please download and unzip the text8 example from http://mattmahoney.net/dc/text8.zip");
+			throw new IllegalStateException(
+					"Please download and unzip the text8 example from http://mattmahoney.net/dc/text8.zip");
 		List<String> read = Common.readToList(f);
-		List<List<String>> partitioned = Lists.transform(read, new Function<String, List<String>>() {
+		List<List<String>> partitioned = Lists.transform(read, new Function<String, List<String>>()
+		{
 			@Override
-			public List<String> apply(String input) {
+			public List<String> apply(String input)
+			{
 				return Arrays.asList(input.split(" "));
 			}
 		});
-		
-		Word2VecModel model = Word2VecModel.trainer()
-				.setMinVocabFrequency(5)
-				.useNumThreads(20)
-				.setWindowSize(8)
-				.type(NeuralNetworkType.CBOW)
-				.setLayerSize(200)
-				.useNegativeSamples(25)
-				.setDownSamplingRate(1e-4)
-				.setNumIterations(5)
-				.setListener(new TrainingProgressListener() {
-					@Override public void update(Stage stage, double progress) {
-						System.out.println(String.format("%s is %.2f%% complete", Format.formatEnum(stage), progress * 100));
+
+		Word2VecModel model = Word2VecModel.trainer().setMinVocabFrequency(5).useNumThreads(20).setWindowSize(8)
+				.type(NeuralNetworkType.CBOW).setLayerSize(200).useNegativeSamples(25).setDownSamplingRate(1e-4)
+				.setNumIterations(5).setListener(new TrainingProgressListener()
+				{
+					@Override
+					public void update(Stage stage, double progress)
+					{
+						System.out.println(
+								String.format("%s is %.2f%% complete", Format.formatEnum(stage), progress * 100));
 					}
-				})
-				.train(partitioned);
+				}).train(partitioned);
 
 		// Writes model to a thrift file
-		try (ProfilingTimer timer = ProfilingTimer.create(LOG, "Writing output to file")) {
+		try (ProfilingTimer timer = ProfilingTimer.create(LOG, "Writing output to file"))
+		{
 			FileUtils.writeStringToFile(new File("text8.model"), ThriftUtils.serializeJson(model.toThrift()));
 		}
 
-		// Alternatively, you can write the model to a bin file that's compatible with the C
+		// Alternatively, you can write the model to a bin file that's
+		// compatible with the C
 		// implementation.
-		try(final OutputStream os = Files.newOutputStream(Paths.get("text8.bin"))) {
+		try (final OutputStream os = Files.newOutputStream(Paths.get("text8.bin")))
+		{
 			model.toBinFile(os);
 		}
-		
+
 		interact(model.forSearch());
 	}
-	
+
 	/** Loads a model and allows user to find similar words */
-	public static void loadModel() throws IOException, TException, UnknownWordException {
+	public static void loadModel() throws IOException, TException, UnknownWordException
+	{
 		final Word2VecModel model;
-		try (ProfilingTimer timer = ProfilingTimer.create(LOG, "Loading model")) {
+		try (ProfilingTimer timer = ProfilingTimer.create(LOG, "Loading model"))
+		{
 			String json = Common.readFileToString(new File("text8.model"));
 			model = Word2VecModel.fromThrift(ThriftUtils.deserializeJson(new Word2VecModelThrift(), json));
 		}
 		interact(model.forSearch());
 	}
-	
+
 	/** Example using Skip-Gram model */
-	public static void skipGram() throws IOException, TException, InterruptedException, UnknownWordException {
+	public static void skipGram() throws IOException, TException, InterruptedException, UnknownWordException
+	{
 		List<String> read = Common.readToList(new File("sents.cleaned.word2vec.txt"));
-		List<List<String>> partitioned = Lists.transform(read, new Function<String, List<String>>() {
+		List<List<String>> partitioned = Lists.transform(read, new Function<String, List<String>>()
+		{
 			@Override
-			public List<String> apply(String input) {
+			public List<String> apply(String input)
+			{
 				return Arrays.asList(input.split(" "));
 			}
 		});
-		
-		Word2VecModel model = Word2VecModel.trainer()
-				.setMinVocabFrequency(100)
-				.useNumThreads(20)
-				.setWindowSize(7)
-				.type(NeuralNetworkType.SKIP_GRAM)
-				.useHierarchicalSoftmax()
-				.setLayerSize(300)
-				.useNegativeSamples(0)
-				.setDownSamplingRate(1e-3)
-				.setNumIterations(5)
-				.setListener(new TrainingProgressListener() {
-					@Override public void update(Stage stage, double progress) {
-						System.out.println(String.format("%s is %.2f%% complete", Format.formatEnum(stage), progress * 100));
+
+		Word2VecModel model = Word2VecModel.trainer().setMinVocabFrequency(100).useNumThreads(20).setWindowSize(7)
+				.type(NeuralNetworkType.SKIP_GRAM).useHierarchicalSoftmax().setLayerSize(300).useNegativeSamples(0)
+				.setDownSamplingRate(1e-3).setNumIterations(5).setListener(new TrainingProgressListener()
+				{
+					@Override
+					public void update(Stage stage, double progress)
+					{
+						System.out.println(
+								String.format("%s is %.2f%% complete", Format.formatEnum(stage), progress * 100));
 					}
-				})
-				.train(partitioned);
-		
-		try (ProfilingTimer timer = ProfilingTimer.create(LOG, "Writing output to file")) {
-			FileUtils.writeStringToFile(new File("300layer.20threads.5iter.model"), ThriftUtils.serializeJson(model.toThrift()));
+				}).train(partitioned);
+
+		try (ProfilingTimer timer = ProfilingTimer.create(LOG, "Writing output to file"))
+		{
+			FileUtils.writeStringToFile(new File("300layer.20threads.5iter.model"),
+					ThriftUtils.serializeJson(model.toThrift()));
 		}
-		
+
 		interact(model.forSearch());
 	}
-	
-	private static void interact(Searcher searcher) throws IOException, UnknownWordException {
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
-			while (true) {
+
+	private static void interact(Searcher searcher) throws IOException, UnknownWordException
+	{
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in)))
+		{
+			while (true)
+			{
 				System.out.print("Enter word or sentence (EXIT to break): ");
 				String word = br.readLine();
-				if (word.equals("EXIT")) {
+				if (word.equals("EXIT"))
+				{
 					break;
 				}
 				List<Match> matches = searcher.getMatches(word, 20);
