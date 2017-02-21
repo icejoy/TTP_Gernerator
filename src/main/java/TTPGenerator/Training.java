@@ -12,7 +12,7 @@ import Parser.Parser_Factory;
 import Parser.Parser_Interface;
 import Parser.Parser_Paragraph_CommonWords_Compare;
 import Tool.StopWords_Clear;
-import use_word2vec.Word2Vec_VectorGenerator;
+import Tool.Word2Vec_VectorGenerator;
 
 public class Training
 {
@@ -93,7 +93,7 @@ public class Training
 		this.parse.get(4).set_ArrayList2String(temp);
 		this.parse.get(4).parse("3", "mix");
 
-		this.output.get(3).start_ArrayList2String("./output/Document_CommonWords_mix_output.html",
+		this.output.get(3).start_ArrayList2String(true,"./output/Document_CommonWords_mix_output.html",
 				this.parse.get(4).get_Stringresult());
 
 		// run w2v

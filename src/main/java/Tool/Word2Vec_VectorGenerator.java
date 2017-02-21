@@ -1,4 +1,4 @@
-package use_word2vec;
+package Tool;
 
 import java.io.File;
 import java.util.ArrayList;

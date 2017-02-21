@@ -13,7 +13,7 @@ import Parser.Parser_Factory;
 import Parser.Parser_Interface;
 import Parser.Parser_PrecisionRecallCalculate;
 import Tool.StopWords_Clear;
-import use_word2vec.Word2Vec_VectorGenerator;
+import Tool.Word2Vec_VectorGenerator;
 
 public class PDF_Test
 {
@@ -68,7 +68,7 @@ public class PDF_Test
 				this.SWC.ParagraphClear(this.parser.get(2).get_Stringresult()));
 		this.parser.get(3).set_ArrayList2String(this.ParagraphList);
 		this.parser.get(3).parse("Precision", "src/main/java/Input_Data/SimilarWords_List.txt");
-		this.output.get(3).start_ArrayList2String("./output/Precision.txt", this.parser.get(3).get_Stringresult());
+		this.output.get(3).start_ArrayList2String(true,"./output/Precision.txt", this.parser.get(3).get_Stringresult());
 
 		// PI.add(new Parser_DocumentSplit());
 		// PI.add(new Parser_RecallCalculate());
@@ -82,7 +82,8 @@ public class PDF_Test
 		// recall and precision
 		this.parser.get(3).set_ArrayList2String(this.ParagraphList);
 		this.parser.get(3).parse("paragraph", "src/main/java/Input_Data/SimilarWords_List.txt");
-		this.output.get(3).start_ArrayList2String("./output/Document_recall.txt", this.parser.get(3).get_Stringresult());
+		this.output.get(3).start_ArrayList2String(true,"./output/Document_recall.txt",
+				this.parser.get(3).get_Stringresult());
 
 		int Stix_TTP_count = -1;
 		// [0] stix [1] ttp

@@ -24,7 +24,7 @@ public class Output_Excel implements Output_Interface
 		this.II.input("./Input_Data/stop-word-list.txt");
 	}
 
-	public void start_WordNum_output(String FileName, ArrayList<ArrayList<ArrayList<String>>> Words,
+	public void start_WordNum_output(Boolean Cover,String FileName, ArrayList<ArrayList<ArrayList<String>>> Words,
 			ArrayList<ArrayList<ArrayList<Double>>> Numbers)
 	{
 		input();
@@ -42,7 +42,7 @@ public class Output_Excel implements Output_Interface
 		try
 		{
 			String word_str, number_str;
-			FileWriter writer = new FileWriter(FileName + ".csv");
+			FileWriter writer = new FileWriter(FileName + ".csv",!Cover);
 			String[] description =
 			{ "stix", "ttp", "cybox", "other" };
 			// 每個TTP
@@ -81,8 +81,8 @@ public class Output_Excel implements Output_Interface
 				}
 			}
 			writer.close();
-			Data_Del_StopWords_output(FileName);
-			Data_Filter_output(FileName);
+			Data_Del_StopWords_output(true,FileName);
+			Data_Filter_output(true,FileName);
 		}
 		catch (IOException e)
 		{
@@ -91,7 +91,7 @@ public class Output_Excel implements Output_Interface
 
 	}
 
-	public void Data_Filter_output(String FileName)
+	public void Data_Filter_output(Boolean Cover,String FileName)
 	{
 		int count_word = 0, count_double = 0;
 		ArrayList<ArrayList<String>> words = new ArrayList<ArrayList<String>>();
@@ -100,7 +100,7 @@ public class Output_Excel implements Output_Interface
 		try
 		{
 			String word_str, number_str;
-			FileWriter writer = new FileWriter(FileName + "_Filter_Del_Stop_Words.csv");
+			FileWriter writer = new FileWriter(FileName + "_Filter_Del_Stop_Words.csv",!Cover);
 			String[] description =
 			{ "stix", "ttp", "cybox", "other" };
 			// 4個Description
@@ -220,7 +220,7 @@ public class Output_Excel implements Output_Interface
 		}
 	}
 
-	public void Data_Del_StopWords_output(String FileName)
+	public void Data_Del_StopWords_output(Boolean Cover,String FileName)
 	{
 		int count_word = 0, count_double = 0;
 		ArrayList<ArrayList<String>> words = new ArrayList<ArrayList<String>>();
@@ -229,7 +229,7 @@ public class Output_Excel implements Output_Interface
 		try
 		{
 			String word_str, number_str;
-			FileWriter writer = new FileWriter(FileName + "_Del_Stop_Words.csv");
+			FileWriter writer = new FileWriter(FileName + "_Del_Stop_Words.csv",!Cover);
 			String[] description =
 			{ "stix", "ttp", "cybox", "other" };
 			// 4個Description
@@ -305,21 +305,21 @@ public class Output_Excel implements Output_Interface
 		}
 	}
 
-	public void start_TTP_output(String FileName,ArrayList<TTP> TTPs)
+	public void start_TTP_output(Boolean Cover,String FileName,ArrayList<TTP> TTPs)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void start_Match_output(String FileName, ArrayList<ArrayList<ArrayList<ArrayList<Match>>>> Word2Vec)
+	public void start_Match_output(Boolean Cover,String FileName, ArrayList<ArrayList<ArrayList<ArrayList<Match>>>> Word2Vec)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void start_ArrayList2String(String FileName, ArrayList<ArrayList<String>> ArrayList2Strings)
+	public void start_ArrayList2String(Boolean Cover,String FileName, ArrayList<ArrayList<String>> ArrayList2Strings)
 	{
 		// TODO Auto-generated method stub
 		

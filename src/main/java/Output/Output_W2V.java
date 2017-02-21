@@ -11,13 +11,13 @@ public class Output_W2V implements Output_Interface
 {
 
 
-	public void start_Match_output(String FileName, ArrayList<ArrayList<ArrayList<ArrayList<Match>>>> Word2Vec)
+	public void start_Match_output(Boolean Cover,String FileName, ArrayList<ArrayList<ArrayList<ArrayList<Match>>>> Word2Vec)
 	{
 		try
 		{
 			String words="";
 			String numbers="";
-			FileWriter writer = new FileWriter(FileName);
+			FileWriter writer = new FileWriter(FileName,!Cover);
 			String[] description={"stix\n","ttp\n"};
 			for(int i=0;i<Word2Vec.size();i++)
 			{
@@ -51,17 +51,17 @@ public class Output_W2V implements Output_Interface
 		}
 	}
 	
-	public void start_WordNum_output(String FileName, ArrayList<ArrayList<ArrayList<String>>> Words,
+	public void start_WordNum_output(Boolean Cover,String FileName, ArrayList<ArrayList<ArrayList<String>>> Words,
 			ArrayList<ArrayList<ArrayList<Double>>> Numbers)
 	{	
 	}
 	
-	public void start_TTP_output(String FileName, ArrayList<TTP> TTPs)
+	public void start_TTP_output(Boolean Cover,String FileName, ArrayList<TTP> TTPs)
 	{		
 	}
 
 	@Override
-	public void start_ArrayList2String(String FileName, ArrayList<ArrayList<String>> ArrayList2Strings)
+	public void start_ArrayList2String(Boolean Cover,String FileName, ArrayList<ArrayList<String>> ArrayList2Strings)
 	{
 		// TODO Auto-generated method stub
 		
