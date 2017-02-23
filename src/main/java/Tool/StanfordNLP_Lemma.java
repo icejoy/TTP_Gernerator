@@ -1,8 +1,10 @@
 package Tool;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.CoreAnnotations.LemmaAnnotation;
@@ -64,11 +66,13 @@ public class StanfordNLP_Lemma
 		return content;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ArrayList<ArrayList<String>> Lemma_ArrayList_Clear(ArrayList<ArrayList<String>> content)
 	{
 		String outputStr = "";
 		for (int a = 0; a < content.size(); a++)
 		{
+			Set set=new HashSet();
 			for (int i = 0; i < content.get(a).size(); i++)
 			{
 				if (content.get(a).get(i) != null)
@@ -91,9 +95,12 @@ public class StanfordNLP_Lemma
 						}
 
 					}
-					content.get(a).set(i, outputStr);
+					set.add(outputStr);
+//					content.get(a).set(i, outputStr);
 				}
 			}
+			content.set(a, new ArrayList<String>(set));
+			set.clear();
 		}
 		return content;
 	}

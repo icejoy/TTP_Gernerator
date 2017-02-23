@@ -1,17 +1,11 @@
 recall is : 
-apt1: 87.5
-network: 56.25
-backdoor: 56.25
-intruder: 62.5
-backdoor: 56.25
 apt: 93.75
-use: 81.25
+apt1: 87.5
 intruder: 62.5
-use: 81.25
-use: 81.25
-use: 81.25
-ip: 75.0
-network: 56.25
-web: 56.25
-com: 68.75
 work: 62.5
+ip: 75.0
+web: 56.25
+backdoor: 56.25
+com: 68.75
+use: 81.25
+network: 56.25

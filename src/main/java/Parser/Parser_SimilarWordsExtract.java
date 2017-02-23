@@ -1,6 +1,8 @@
 package Parser;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import Criteria.TTP;
 import Tool.CutWords;
@@ -62,12 +64,12 @@ public class Parser_SimilarWordsExtract implements Parser_Interface
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void SimilarExtract()
 	{
 		ArrayList<ArrayList<String>> temp = new ArrayList<ArrayList<String>>(Similar_Stix_Ttp);
 		Similar_Stix_Ttp.clear();
-
-		Similar_Stix_Ttp.add(new ArrayList<String>());
+		Set set=new HashSet();
 
 		String word = "";
 		Boolean have = false;
@@ -78,12 +80,13 @@ public class Parser_SimilarWordsExtract implements Parser_Interface
 				word = temp.get(i).get(j);
 				for (int k = 0; k < temp.size(); k++)
 				{
-					if (temp.get(k).contains(word) && k != i&&!word.equals("")&&!word.equals(" "))
+					if (temp.get(k).contains(word) && k != i&&!word.equals("")&&!word.equals(" ")&& !word.matches("[0-9]+"))
 					{
-						if (!Similar_Stix_Ttp.get(0).contains(word))
-						{
-							Similar_Stix_Ttp.get(0).add(word);
-						}
+						set.add(word);
+//						if (!Similar_Stix_Ttp.get(0).contains(word))
+//						{
+//							Similar_Stix_Ttp.get(0).add(word);
+//						}
 						have = true;
 						Del_RepeatWord(word, temp.get(k));
 					}
@@ -96,6 +99,8 @@ public class Parser_SimilarWordsExtract implements Parser_Interface
 				}
 			}
 		}
+
+		Similar_Stix_Ttp.add(new ArrayList<String>(set));
 	}
 
 	public void Del_RepeatWord(String word, ArrayList<String> temp)
